@@ -1,0 +1,55 @@
+/* styles.css */
+
+/* Base page layout */
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 2em;
+}
+header h1 {
+  margin: 0;
+  color: #2c3e50;
+}
+nav a {
+  color: #0073e6;
+  text-decoration: none;
+  margin: 0 .5em;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Main content */
+main p {
+  font-size: 1.1em;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 2em;
+  font-size: .9em;
+  color: #666;
+}
+
+/* Tables for listings (when you add them) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: .5em;
+}
+th {
+  background: #f0f0f0;
+}
