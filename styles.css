@@ -1,55 +1,103 @@
-/* styles.css */
-
-/* Base page layout */
 body {
-  font-family: Arial, sans-serif;
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 1.5;
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  background: #f7f9fb;
 }
 
-/* Header */
 header {
+  background: #003366;
+  color: #ffffff;
+  padding: 1.5em 1em;
   text-align: center;
-  margin-bottom: 2em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
+
 header h1 {
   margin: 0;
-  color: #2c3e50;
-}
-nav a {
-  color: #0073e6;
-  text-decoration: none;
-  margin: 0 .5em;
-}
-nav a:hover {
-  text-decoration: underline;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
-/* Main content */
-main p {
-  font-size: 1.1em;
-}
-
-/* Footer */
 footer {
+  background: #f1f3f5;
+  color: #444;
   text-align: center;
-  margin-top: 2em;
-  font-size: .9em;
-  color: #666;
+  padding: 1em;
+  font-size: 0.9rem;
 }
 
-/* Tables for listings (when you add them) */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5em 0;
+main {
+  padding: 1em;
+  max-width: 1000px;
+  margin: auto;
 }
-th, td {
-  border: 1px solid #ddd;
-  padding: .5em;
+
+h1, h2 {
+  margin-top: 0;
 }
-th {
-  background: #f0f0f0;
+
+.btn-group {
+  margin: 1em 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.btn-group button {
+  padding: 8px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  background: #0069d9;
+  color: white;
+  border-radius: 4px;
+  transition: background 0.2s ease-in-out;
+}
+
+.btn-group button:hover {
+  background: #0056b3;
+}
+
+.no-matches {
+  display: none;
+  text-align: center;
+  color: #888;
+  padding: 1em;
+  font-style: italic;
+}
+
+table.dataTable {
+  width: 100% !important;
+}
+
+/* Responsive design tweaks */
+@media (max-width: 768px) {
+  table.dataTable thead {
+    display: none;
+  }
+
+  table.dataTable td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+  }
+
+  table.dataTable tr {
+    margin-bottom: 1em;
+    background: #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  table.dataTable td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+    color: #555;
+  }
 }
