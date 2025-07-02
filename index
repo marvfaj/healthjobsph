@@ -5,7 +5,19 @@
   <title>Health Jobs PH</title>
 </head>
 <body>
+<header>
   <h1>Health Jobs PH</h1>
-  <p>Welcome! This is the MVP for CSC nurse vacancies.</p>
+  <nav>
+    <a href="luzon.html">Luzon</a> |
+    <a href="visayas.html">Visayas</a> |
+    <a href="mindanao.html">Mindanao</a>
+  </nav>
+</header>
+<main>
+  <p>Welcome! Click above to view the latest CSC nurse vacancies by region.</p>
+</main>
+<footer>
+  © 2025 Health Jobs PH
+</footer>
 </body>
 </html>
