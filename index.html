@@ -4,33 +4,46 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CSC Nurse Vacancies – Health Jobs PH</title>
+  <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role.">
+  <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/">
 
-  <!-- Meta -->
-  <meta name="description" content="Up-to-date CSC nurse vacancies across Luzon, Visayas, and Mindanao." />
-  <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/" />
+  <!-- Open Graph (social previews) -->
   <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH" />
-  <meta property="og:description" content="Live listings of CSC nurse job openings across PH." />
+  <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao." />
   <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/" />
   <meta property="og:type" content="website" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.1.1/css/searchPanes.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.3.3/css/searchPanes.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.6.2/css/colReorder.dataTables.min.css" />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/searchpanes/2.3.3/js/dataTables.searchPanes.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/colreorder/1.6.2/js/dataTables.colReorder.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 
 <body>
   <header>
     <h1>CSC Nurse Vacancies</h1>
-    <p>Filter by island group, region, or sort by dates.</p>
   </header>
 
   <main>
-    <div class="no-matches" id="no-jobs-message">
-      No matching vacancies found.
+    <h2>Government Nurse Jobs in the Philippines</h2>
+    <p>Browse the most recent CSC postings for nurse vacancies. Use filters, search by keyword, or export data to CSV.</p>
+
+    <div id="no-jobs-message" class="no-matches" style="display:none;">
+      No jobs found matching your filters.
     </div>
 
-    <table id="jobs-table" class="display">
+    <table id="jobs-table" class="display stripe responsive" style="width:100%">
       <thead>
         <tr>
           <th>Office</th>
@@ -42,19 +55,13 @@
         </tr>
       </thead>
       <tbody id="job-table-body">
-        <tr><td colspan="6">Loading jobs…</td></tr>
+        <tr><td colspan="6">Loading job listings…</td></tr>
       </tbody>
     </table>
   </main>
 
   <footer>
-    <small>© 2025 Health Jobs PH</small>
+    © 2025 Health Jobs PH
   </footer>
-
-  <!-- Scripts -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/searchpanes/2.1.1/js/dataTables.searchPanes.min.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>
