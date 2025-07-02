@@ -1,36 +1,81 @@
-fetch('jobs_all_rows.html')
-  .then(response => response.text())
-  .then(html => {
-    document.getElementById('job-table-body').outerHTML = html;
+// script.js
+// Main frontend script for HealthJobsPH GitHub Pages site
+// Features: Load HTML rows from R-generated fragment, initialize DataTable, enable filtering, CSV export, mobile optimization, and error handling
 
-    // Add mobile-friendly labels
-    $('#jobs-table tbody tr').each(function () {
-      $(this).find('td').eq(0).attr('data-label', 'Office');
-      $(this).find('td').eq(1).attr('data-label', 'Position');
-      $(this).find('td').eq(2).attr('data-label', 'Region');
-      $(this).find('td').eq(3).attr('data-label', 'Posting Date');
-      $(this).find('td').eq(4).attr('data-label', 'Closing Date');
-      $(this).find('td').eq(5).attr('data-label', 'Details');
-    });
+document.addEventListener('DOMContentLoaded', function () {
+  const tableBody = document.getElementById('job-table-body');
+  const noMatchMsg = document.getElementById('no-jobs-message');
 
-    // Enable filtering and search
-    const table = $('#jobs-table').DataTable({
-      dom: 'Plfrtip',
-      responsive: true,
-      searchPanes: {
-        cascadePanes: true,
-        viewTotal: true
-      },
-      columnDefs: [
-        { searchPanes: { show: true }, targets: [0, 2] },
-        { orderable: true, targets: [3, 4] },
-        { orderable: false, targets: 5 }
-      ]
-    });
+  // Utility: Show developer console log with row count
+  function logRowCount() {
+    const rowCount = document.querySelectorAll('#jobs-table tbody tr').length;
+    console.log(`✅ Loaded ${rowCount} job rows into the table.`);
+    if (rowCount === 0) {
+      console.warn('⚠️ No job rows were loaded. Check if jobs_all_rows.html exists or is empty.');
+    }
+  }
 
-    // Show or hide the "no jobs" message
-    table.on('draw', function () {
-      const visible = $('#jobs-table tbody tr:visible').length;
-      $('#no-jobs-message').toggle(visible === 0);
+  // Load HTML rows generated from R (contains <tr>…</tr> rows only)
+  fetch('jobs_all_rows.html')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`❌ Failed to fetch jobs_all_rows.html (${response.status})`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      // Replace table body with loaded rows
+      tableBody.outerHTML = html;
+
+      // Mobile display: Assign data-label attributes to each cell
+      document.querySelectorAll('#jobs-table tbody tr').forEach(row => {
+        const labels = ['Office', 'Position', 'Region', 'Posting Date', 'Closing Date', 'Details'];
+        row.querySelectorAll('td').forEach((cell, i) => {
+          cell.setAttribute('data-label', labels[i] || '');
+        });
+      });
+
+      // ✅ Initialize DataTable with full features
+      window.table = $('#jobs-table').DataTable({
+        dom: 'PlBfrtip',
+        responsive: true,
+        colReorder: true,
+        buttons: [
+          {
+            extend: 'csv',
+            text: '⬇ Export Filtered CSV',
+            className: 'dt-button'
+          }
+        ],
+        searchPanes: {
+          cascadePanes: true,
+          viewTotal: true
+        },
+        columnDefs: [
+          { searchPanes: { show: true }, targets: [0, 2, 3] },  // Office, Region, Posting Date
+          { orderable: false, targets: 5 }                      // Disable sorting on 'Details'
+        ],
+        language: {
+          zeroRecords: "No jobs match your filter criteria.",
+          searchPanes: {
+            clearMessage: 'Clear filters',
+            collapse: { 0: 'Filter Options', _: 'Filter Options (%d)' }
+          }
+        }
+      });
+
+      // UI feedback when table is filtered empty
+      window.table.on('draw', function () {
+        const visible = $('#jobs-table tbody tr:visible').length;
+        noMatchMsg.style.display = visible === 0 ? 'block' : 'none';
+      });
+
+      logRowCount();
+    })
+    .catch(error => {
+      console.error(error);
+      tableBody.innerHTML = `<tr><td colspan="6" style="color:red; text-align:center;">
+        Error loading job listings. Please check the console or contact site admin.
+      </td></tr>`;
     });
-  });
+});
