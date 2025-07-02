@@ -13,73 +13,10 @@
   <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/" />
   <meta property="og:type" content="website" />
 
-  <!-- DataTables & jQuery -->
+  <!-- Styles -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.1.1/css/searchPanes.dataTables.min.css" />
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/searchpanes/2.1.1/js/dataTables.searchPanes.min.js"></script>
-
-  <!-- Minimal CSS -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      margin: 0;
-      padding: 1em;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 1em;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-
-    .no-matches {
-      display: none;
-      text-align: center;
-      font-style: italic;
-      color: #777;
-      margin-top: 1em;
-    }
-
-    @media (max-width: 768px) {
-      table thead {
-        display: none;
-      }
-
-      table td {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        border: none;
-        border-bottom: 1px solid #eee;
-      }
-
-      table tr {
-        margin-bottom: 1em;
-        border: 1px solid #ddd;
-        padding: 8px;
-      }
-
-      table td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        display: block;
-        margin-bottom: 4px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
@@ -110,44 +47,14 @@
     </table>
   </main>
 
-  <script>
-    // Load R-generated HTML rows from file
-    fetch('jobs_all_rows.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('job-table-body').outerHTML = html;
+  <footer>
+    <small>© 2025 Health Jobs PH</small>
+  </footer>
 
-        // For responsive view: add data-label for each cell
-        $('#jobs-table tbody tr').each(function () {
-          $(this).find('td').eq(0).attr('data-label', 'Office');
-          $(this).find('td').eq(1).attr('data-label', 'Position');
-          $(this).find('td').eq(2).attr('data-label', 'Region');
-          $(this).find('td').eq(3).attr('data-label', 'Posting Date');
-          $(this).find('td').eq(4).attr('data-label', 'Closing Date');
-          $(this).find('td').eq(5).attr('data-label', 'Details');
-        });
-
-        // Initialize DataTable with basic filtering
-        const table = $('#jobs-table').DataTable({
-          dom: 'Plfrtip',  // P = SearchPanes, l = length menu, f = filter input, t = table, i = info, p = pagination
-          responsive: true,
-          searchPanes: {
-            cascadePanes: true,
-            viewTotal: true
-          },
-          columnDefs: [
-            { searchPanes: { show: true }, targets: [0, 2] }, // Office and Region
-            { orderable: true, targets: [3, 4] },              // Sortable: Posting and Closing
-            { orderable: false, targets: 5 }                   // Disable sort on 'Details'
-          ]
-        });
-
-        // If filtered result is 0, show message
-        table.on('draw', function () {
-          const visible = $('#jobs-table tbody tr:visible').length;
-          $('#no-jobs-message').toggle(visible === 0);
-        });
-      });
-  </script>
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/searchpanes/2.1.1/js/dataTables.searchPanes.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
