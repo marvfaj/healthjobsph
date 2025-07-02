@@ -7,19 +7,24 @@
   <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role." />
   <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/" />
 
-  <!-- Open Graph for sharing -->
+  <!-- Open Graph -->
   <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH" />
   <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao." />
   <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/" />
   <meta property="og:type" content="website" />
 
-  <!-- Styles & libraries -->
-  <link rel="stylesheet" href="styles.css" />
+  <!-- DataTables extensions -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.1.1/css/searchPanes.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.6.2/css/colReorder.dataTables.min.css" />
+
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/searchpanes/2.1.1/js/dataTables.searchPanes.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/colreorder/1.6.2/js/dataTables.colReorder.min.js"></script>
 
   <style>
     body {
@@ -30,20 +35,20 @@
       background: #f7f9fb;
     }
 
-      header {
-    background: #003366; /* darker blue */
-    color: #ffffff;
-    padding: 1.5em 1em;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    header {
+      background: #003366;
+      color: #ffffff;
+      padding: 1.5em 1em;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    
+
     header h1 {
       margin: 0;
       font-size: 1.8rem;
       font-weight: bold;
     }
-    
+
     footer {
       background: #f1f3f5;
       color: #444;
@@ -62,42 +67,16 @@
       margin-top: 0;
     }
 
-    .btn-group {
-      margin: 1em 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5em;
-    }
-
-    .btn-group button {
-      padding: 8px 14px;
-      font-size: 1rem;
-      cursor: pointer;
-      border: none;
-      background: #0069d9;
-      color: white;
-      border-radius: 4px;
-      transition: background 0.2s ease-in-out;
-    }
-
-    .btn-group button:hover {
-      background: #0056b3;
-    }
-
-    .btn-group button.active {
-      background: #003c7e;
-    }
-
-    table.dataTable {
-      width: 100% !important;
-    }
-
     .no-matches {
       display: none;
       text-align: center;
       color: #888;
       padding: 1em;
       font-style: italic;
+    }
+
+    table.dataTable {
+      width: 100% !important;
     }
 
     @media (max-width: 768px) {
@@ -138,11 +117,7 @@
 
   <main>
     <h2>Health Jobs PH – Government Nurse Openings</h2>
-    <p>Use the filters below to explore up-to-date CSC nurse vacancies across the Philippines. You can select multiple regions and export results.</p>
-
-    <div class="btn-group">
-      <button onclick="downloadCSV()">⬇ Export Filtered CSV</button>
-    </div>
+    <p>Use the filters below to explore up-to-date CSC nurse vacancies across the Philippines. Select multiple regions or dates. You can also drag columns or export the table as a CSV.</p>
 
     <!-- No match message -->
     <div class="no-matches" id="no-jobs-message">
@@ -150,18 +125,18 @@
     </div>
 
     <table id="jobs-table" class="display stripe responsive" style="width:100%">
-     <thead>
-      <tr>
-        <th>Office</th>
-        <th>Position</th>
-        <th>Region</th>
-        <th>Posting Date</th>
-        <th>Closing Date</th>
-        <th>Details</th>
-      </tr>
-    </thead>
+      <thead>
+        <tr>
+          <th>Office</th>
+          <th>Position</th>
+          <th>Region</th>
+          <th>Posting Date</th>
+          <th>Closing Date</th>
+          <th>Details</th>
+        </tr>
+      </thead>
       <tbody id="job-table-body">
-        <tr><td colspan="4">Loading job listings…</td></tr>
+        <tr><td colspan="6">Loading job listings…</td></tr>
       </tbody>
     </table>
   </main>
@@ -171,60 +146,49 @@
   </footer>
 
   <script>
-    // Load the R-generated rows from jobs_all_rows.html
     fetch('jobs_all_rows.html')
       .then(response => response.text())
       .then(html => {
         document.getElementById('job-table-body').outerHTML = html;
 
-        // Add data-label attributes for mobile responsiveness
+        // Add mobile labels
         $('#jobs-table tbody tr').each(function () {
           $(this).find('td').eq(0).attr('data-label', 'Office');
           $(this).find('td').eq(1).attr('data-label', 'Position');
-          $(this).find('td').eq(2).attr('data-label', 'Closing Date');
-          $(this).find('td').eq(3).attr('data-label', 'Details');
+          $(this).find('td').eq(2).attr('data-label', 'Region');
+          $(this).find('td').eq(3).attr('data-label', 'Posting Date');
+          $(this).find('td').eq(4).attr('data-label', 'Closing Date');
+          $(this).find('td').eq(5).attr('data-label', 'Details');
         });
 
-        // Initialize DataTable with SearchPanes
+        // Initialize full-featured DataTable
         window.table = $('#jobs-table').DataTable({
-          dom: 'Plfrtip',
+          dom: 'PlBfrtip',
           responsive: true,
+          colReorder: true,
+          buttons: [
+            {
+              extend: 'csv',
+              text: '⬇ Export Filtered CSV',
+              className: 'dt-button'
+            }
+          ],
           searchPanes: {
             cascadePanes: true,
             viewTotal: true
           },
           columnDefs: [
-            { searchPanes: { show: true }, targets: 0 }, // Office/region filter
-            { orderable: false, targets: 3 }
+            { searchPanes: { show: true }, targets: [0, 2, 3] },  // Office, Region, Posting Date
+            { orderable: false, targets: 5 } // Disable sort on 'Details'
           ]
         });
 
-        // Monitor for zero matching rows
+        // Show no-match message if all rows are filtered
         table.on('draw', function () {
           const visibleRows = $('#jobs-table tbody tr:visible').length;
           $('#no-jobs-message').toggle(visibleRows === 0);
         });
       });
-
-    // Export visible rows as CSV
-    function downloadCSV() {
-      let rows = [];
-      $('#jobs-table thead tr').each(function () {
-        const cols = $(this).find('th').map((_, th) => $(th).text()).get();
-        rows.push(cols);
-      });
-      $('#jobs-table tbody tr:visible').each(function () {
-        const cols = $(this).find('td').map((_, td) => `"${$(td).text().trim()}"`).get();
-        rows.push(cols);
-      });
-      const csv = rows.map(row => row.join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'csc_jobs_filtered.csv';
-      a.click();
-    }
   </script>
 </body>
 </html>
