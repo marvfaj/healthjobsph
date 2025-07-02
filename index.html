@@ -4,110 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CSC Nurse Vacancies – Health Jobs PH</title>
-  <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role." />
+  <meta name="description" content="Free nurse job listings from the CSC, filtered by region and updated weekly." />
   <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/" />
 
-  <!-- Open Graph -->
+  <!-- SEO + Social sharing -->
   <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH" />
   <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao." />
   <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/" />
   <meta property="og:type" content="website" />
 
-  <!-- DataTables extensions -->
+  <!-- CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.1.1/css/searchPanes.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.6.2/css/colReorder.dataTables.min.css" />
+  <link rel="stylesheet" href="styles.css" />
 
+  <!-- JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/searchpanes/2.1.1/js/dataTables.searchPanes.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
   <script src="https://cdn.datatables.net/colreorder/1.6.2/js/dataTables.colReorder.min.js"></script>
-
-  <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      background: #f7f9fb;
-    }
-
-    header {
-      background: #003366;
-      color: #ffffff;
-      padding: 1.5em 1em;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-
-    footer {
-      background: #f1f3f5;
-      color: #444;
-      text-align: center;
-      padding: 1em;
-      font-size: 0.9rem;
-    }
-
-    main {
-      padding: 1em;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    h1, h2 {
-      margin-top: 0;
-    }
-
-    .no-matches {
-      display: none;
-      text-align: center;
-      color: #888;
-      padding: 1em;
-      font-style: italic;
-    }
-
-    table.dataTable {
-      width: 100% !important;
-    }
-
-    @media (max-width: 768px) {
-      table.dataTable thead {
-        display: none;
-      }
-
-      table.dataTable td {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 8px;
-      }
-
-      table.dataTable tr {
-        margin-bottom: 1em;
-        background: #fff;
-        box-shadow: 0 0 5px rgba(0,0,0,0.05);
-        border-radius: 4px;
-        overflow: hidden;
-      }
-
-      table.dataTable td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        display: block;
-        margin-bottom: 4px;
-        color: #555;
-      }
-    }
-  </style>
+  <script defer src="script.js"></script>
 </head>
 
 <body>
@@ -117,13 +37,19 @@
 
   <main>
     <h2>Health Jobs PH – Government Nurse Openings</h2>
-    <p>Use the filters below to explore up-to-date CSC nurse vacancies across the Philippines. Select multiple regions or dates. You can also drag columns or export the table as a CSV.</p>
+    <p>Filter by region, date, or keyword to view live CSC nurse vacancies. Updated weekly.</p>
 
-    <!-- No match message -->
+    <!-- CSV Export -->
+    <div class="btn-group">
+      <button id="export-button">⬇ Export Filtered CSV</button>
+    </div>
+
+    <!-- No results message -->
     <div class="no-matches" id="no-jobs-message">
       No jobs found matching your filters.
     </div>
 
+    <!-- Table -->
     <table id="jobs-table" class="display stripe responsive" style="width:100%">
       <thead>
         <tr>
@@ -144,53 +70,5 @@
   <footer>
     © 2025 Health Jobs PH
   </footer>
-
-  <script>
-    fetch('jobs_all_rows.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('job-table-body').outerHTML = html;
-
-        // Add mobile labels
-        $('#jobs-table tbody tr').each(function () {
-          $(this).find('td').eq(0).attr('data-label', 'Office');
-          $(this).find('td').eq(1).attr('data-label', 'Position');
-          $(this).find('td').eq(2).attr('data-label', 'Region');
-          $(this).find('td').eq(3).attr('data-label', 'Posting Date');
-          $(this).find('td').eq(4).attr('data-label', 'Closing Date');
-          $(this).find('td').eq(5).attr('data-label', 'Details');
-        });
-
-        // Initialize full-featured DataTable
-        window.table = $('#jobs-table').DataTable({
-          dom: 'PlBfrtip',
-          responsive: true,
-          colReorder: true,
-          buttons: [
-            {
-              extend: 'csv',
-              text: '⬇ Export Filtered CSV',
-              className: 'dt-button'
-            }
-          ],
-          searchPanes: {
-            cascadePanes: true,
-            viewTotal: true
-          },
-          columnDefs: [
-            { searchPanes: { show: true }, targets: [0, 2, 3] },  // Office, Region, Posting Date
-            { orderable: false, targets: 5 } // Disable sort on 'Details'
-          ]
-        });
-       // ✅ Place it here
-        console.log("Loaded rows:", $('#jobs-table tbody tr').length);
-        
-        // Show no-match message if all rows are filtered
-        table.on('draw', function () {
-          const visibleRows = $('#jobs-table tbody tr:visible').length;
-          $('#no-jobs-message').toggle(visibleRows === 0);
-        });
-      });
-  </script>
 </body>
 </html>
