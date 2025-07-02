@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- 1. Specify character encoding for proper text rendering -->
+  <!-- 1. Character encoding -->
   <meta charset="utf-8">
-  <!-- 2. Ensure the page scales correctly on mobile devices -->
+  <!-- 2. Mobile responsiveness -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- 3. Page title shown in browser tab and used by search engines -->
-  <title>Health Jobs PH</title>
-  <!-- 4. Link to our custom stylesheet for layout, typography, and colors -->
+  
+  <!-- 3. Page title: should include your main keyword and region -->
+  <title>CSC Nurse Vacancies – Health Jobs PH</title>
+  
+  <!-- 4. SEO meta description: ~150–160 characters summarizing the page -->
+  <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role.">
+  
+  <!-- 5. Canonical URL: prevents duplicate‐content issues -->
+  <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/">
+  
+  <!-- 6. Open Graph tags (for social sharing previews) -->
+  <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH">
+  <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao. Find your next government nursing role today.">
+  <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/">
+  <meta property="og:type" content="website">
+  
+  <!-- 7. Link to your CSS -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Site header with the main title and navigation links -->
   <header>
-    <h1>Health Jobs PH</h1>
+    <!-- H1 with your primary keyword -->
+    <h1>CSC Nurse Vacancies</h1>
     <nav>
-      <!-- Navigation to region-specific pages -->
       <a href="luzon.html">Luzon</a> |
       <a href="visayas.html">Visayas</a> |
       <a href="mindanao.html">Mindanao</a>
     </nav>
   </header>
-
-  <!-- Main content area -->
+  
   <main>
+    <!-- Use an H2 for your subheading/intro -->
+    <h2>Health Jobs PH – Government Nurse Openings</h2>
     <p>Welcome! Click above to view the latest CSC nurse vacancies by region.</p>
   </main>
-
-  <!-- Footer with copyright notice -->
+  
   <footer>
     © 2025 Health Jobs PH
   </footer>
