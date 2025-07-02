@@ -4,22 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CSC Nurse Vacancies – Health Jobs PH</title>
-  <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role." />
-  <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/" />
-
-  <!-- Open Graph metadata -->
-  <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH" />
-  <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao." />
-  <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/" />
-  <meta property="og:type" content="website" />
-
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.1.1/css/searchPanes.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.6.2/css/colReorder.dataTables.min.css" />
-
-  <!-- Your custom styles -->
+  <meta name="description" content="Browse CSC nurse vacancies in Luzon, Visayas, and Mindanao. Fast, filtered job board for Filipino nurses." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -28,56 +13,44 @@
   </header>
 
   <main>
-    <h2>Health Jobs PH – Government Nurse Openings</h2>
-    <p>
-      Use the filters below to explore CSC nurse vacancies across the Philippines.
-      Filter by region, island group, or date. Export the table or drag columns as needed.
-    </p>
+    <section class="filters">
+      <input class="search" placeholder="🔍 Search by office, region, or position" />
+      <div class="buttons">
+        <button class="filter-btn" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="Luzon">Luzon</button>
+        <button class="filter-btn" data-filter="Visayas">Visayas</button>
+        <button class="filter-btn" data-filter="Mindanao">Mindanao</button>
+      </div>
+    </section>
 
-    <!-- Island group filters -->
-    <div id="island-filters">
-      <button data-island="all" class="filter-button active">All</button>
-      <button data-island="Luzon" class="filter-button">Luzon</button>
-      <button data-island="Visayas" class="filter-button">Visayas</button>
-      <button data-island="Mindanao" class="filter-button">Mindanao</button>
+    <div id="job-list">
+      <table>
+        <thead>
+          <tr>
+            <th><button class="sort" data-sort="office">Office</button></th>
+            <th><button class="sort" data-sort="position">Position</button></th>
+            <th><button class="sort" data-sort="region">Region</button></th>
+            <th><button class="sort" data-sort="posting">Posted</button></th>
+            <th><button class="sort" data-sort="closing">Closing</button></th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody class="list" id="job-table-body">
+          <tr><td colspan="6">Loading job listings…</td></tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- No match message -->
-    <div class="no-matches" id="no-jobs-message">
-      No jobs found matching your filters.
-    </div>
-
-    <!-- Job table -->
-    <table id="jobs-table" class="display stripe responsive" style="width:100%">
-      <thead>
-        <tr>
-          <th>Office</th>
-          <th>Position</th>
-          <th>Region</th>
-          <th>Posting Date</th>
-          <th>Closing Date</th>
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody id="job-table-body">
-        <tr><td colspan="6">Loading job listings…</td></tr>
-      </tbody>
-    </table>
+    <div id="no-results" style="display:none;">No matching vacancies found.</div>
   </main>
 
   <footer>
     © 2025 Health Jobs PH
   </footer>
 
-  <!-- jQuery + DataTables + plugins -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/searchpanes/2.1.1/js/dataTables.searchPanes.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/colreorder/1.6.2/js/dataTables.colReorder.min.js"></script>
-
-  <!-- Your modular script -->
+  <!-- Include List.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+  <!-- Custom logic -->
   <script src="script.js"></script>
 </body>
 </html>
