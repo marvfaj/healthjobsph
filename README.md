@@ -1,2 +1,2 @@
 # healthjobsph
-Website aims to improve job vacancies of public health opportunities in the Philippines
+Website aims to improve the visibility of Philippine job vacancies in public health
