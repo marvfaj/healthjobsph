@@ -4,45 +4,50 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CSC Nurse Vacancies – Health Jobs PH</title>
-  <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role.">
-  <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/">
+  <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role." />
+  <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/" />
 
-  <!-- Open Graph (social previews) -->
+  <!-- Open Graph metadata -->
   <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH" />
   <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao." />
   <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/" />
   <meta property="og:type" content="website" />
 
-  <!-- Styles -->
+  <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.3.3/css/searchPanes.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.1.1/css/searchPanes.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.6.2/css/colReorder.dataTables.min.css" />
+
+  <!-- Your custom styles -->
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Scripts -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/searchpanes/2.3.3/js/dataTables.searchPanes.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/colreorder/1.6.2/js/dataTables.colReorder.min.js"></script>
-  <script defer src="script.js"></script>
 </head>
-
 <body>
   <header>
     <h1>CSC Nurse Vacancies</h1>
   </header>
 
   <main>
-    <h2>Government Nurse Jobs in the Philippines</h2>
-    <p>Browse the most recent CSC postings for nurse vacancies. Use filters, search by keyword, or export data to CSV.</p>
+    <h2>Health Jobs PH – Government Nurse Openings</h2>
+    <p>
+      Use the filters below to explore CSC nurse vacancies across the Philippines.
+      Filter by region, island group, or date. Export the table or drag columns as needed.
+    </p>
 
-    <div id="no-jobs-message" class="no-matches" style="display:none;">
+    <!-- Island group filters -->
+    <div id="island-filters">
+      <button data-island="all" class="filter-button active">All</button>
+      <button data-island="Luzon" class="filter-button">Luzon</button>
+      <button data-island="Visayas" class="filter-button">Visayas</button>
+      <button data-island="Mindanao" class="filter-button">Mindanao</button>
+    </div>
+
+    <!-- No match message -->
+    <div class="no-matches" id="no-jobs-message">
       No jobs found matching your filters.
     </div>
 
+    <!-- Job table -->
     <table id="jobs-table" class="display stripe responsive" style="width:100%">
       <thead>
         <tr>
@@ -63,5 +68,16 @@
   <footer>
     © 2025 Health Jobs PH
   </footer>
+
+  <!-- jQuery + DataTables + plugins -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/searchpanes/2.1.1/js/dataTables.searchPanes.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/colreorder/1.6.2/js/dataTables.colReorder.min.js"></script>
+
+  <!-- Your modular script -->
+  <script src="script.js"></script>
 </body>
 </html>
