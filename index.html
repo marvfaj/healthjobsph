@@ -182,7 +182,9 @@
             { orderable: false, targets: 5 } // Disable sort on 'Details'
           ]
         });
-
+       // ✅ Place it here
+        console.log("Loaded rows:", $('#jobs-table tbody tr').length);
+        
         // Show no-match message if all rows are filtered
         table.on('draw', function () {
           const visibleRows = $('#jobs-table tbody tr:visible').length;
