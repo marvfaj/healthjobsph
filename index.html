@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Basic SEO & mobile setup -->
+  <!-- Basic metadata -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CSC Nurse Vacancies – Health Jobs PH</title>
   <meta name="description" content="Browse the latest government CSC nurse vacancies in Luzon, Visayas, and Mindanao. Free, up-to-date listings to help Filipino nurses find their next role.">
   <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/">
-  
-  <!-- Open Graph tags -->
+
+  <!-- Open Graph -->
   <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH">
   <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao. Find your next government nursing role today.">
   <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/">
   <meta property="og:type" content="website">
-  
-  <!-- Your custom CSS -->
-  <link rel="stylesheet" href="styles.css">
 
-  <!-- DataTables CSS -->
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -26,15 +24,14 @@
     .btn-group { margin: 1em 0; }
     .btn-group button { margin-right: 5px; padding: 6px 12px; cursor: pointer; }
     .btn-group button.active { background-color: #007BFF; color: white; }
-    .faded { opacity: 0.5; cursor: not-allowed; }
+    .faded { opacity: 0.5; }
   </style>
 </head>
 
 <body>
   <header>
     <h1>CSC Nurse Vacancies</h1>
-    <!-- Optional navigation retained for structure -->
-    <!-- Navigation now non-clickable; replaced by filter buttons -->
+    <!-- Filter buttons for island group -->
     <nav class="btn-group">
       <button data-filter="All" class="active">All</button>
       <button data-filter="Luzon">Luzon</button>
@@ -47,11 +44,10 @@
     <h2>Health Jobs PH – Government Nurse Openings</h2>
     <p>Filter by island group to view the latest CSC nurse vacancies.</p>
 
-    <!-- Optional 2: Export and Highlight buttons -->
     <div class="btn-group">
       <button onclick="downloadCSV()">⬇ Export Filtered CSV</button>
       <button onclick="highlightSoon()">⚠ Highlight Closing Soon</button>
-      <button class="faded" disabled>🔒 Option 4 (Coming Soon)</button>
+      <button onclick="showClosedJobs()">📁 Recently Closed</button>
     </div>
 
     <table id="jobs-table" class="display" style="width:100%">
@@ -63,9 +59,10 @@
           <th>Details</th>
         </tr>
       </thead>
-
-      <!-- Paste in jobs_all_rows.html here -->
-      {{ include 'jobs_all_rows.html' }}
+      <tbody id="job-table-body">
+        <!-- Loaded dynamically from jobs_all_rows.html -->
+        <tr><td colspan="4">Loading job listings…</td></tr>
+      </tbody>
     </table>
   </main>
 
@@ -73,29 +70,41 @@
     © 2025 Health Jobs PH
   </footer>
 
-  <!-- JavaScript -->
+  <!-- JavaScript logic -->
   <script>
-    // Main filter and DataTable setup
-    $(document).ready(function () {
-      window.table = $('#jobs-table').DataTable();
+    // Load the R-generated rows from jobs_all_rows.html
+    fetch('jobs_all_rows.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('job-table-body').outerHTML = html;
 
-      $('.btn-group button[data-filter]').on('click', function () {
-        var filter = $(this).data('filter');
-        $('.btn-group button[data-filter]').removeClass('active');
-        $(this).addClass('active');
+        // Initialize DataTables
+        window.table = $('#jobs-table').DataTable();
 
-        $('#jobs-table tbody tr').each(function () {
-          var island = $(this).data('island');
-          if (filter === 'All' || island === filter) {
-            $(this).show();
-          } else {
-            $(this).hide();
-          }
+        // Island filter logic
+        $('.btn-group button[data-filter]').on('click', function () {
+          var filter = $(this).data('filter');
+          $('.btn-group button[data-filter]').removeClass('active');
+          $(this).addClass('active');
+
+          $('#jobs-table tbody tr').each(function () {
+            const island = $(this).data('island');
+            const dateStr = $(this).find('td:nth-child(3)').text();
+            const jobDate = new Date(dateStr + " 00:00:00");
+            const today = new Date();
+
+            if (filter === 'All' && jobDate >= today) {
+              $(this).show();
+            } else if (jobDate >= today && island === filter) {
+              $(this).show();
+            } else {
+              $(this).hide();
+            }
+          });
         });
       });
-    });
 
-    // Export filtered table to CSV (Option 2)
+    // Export visible table rows as CSV
     function downloadCSV() {
       let rows = [];
       $('#jobs-table thead tr').each(function () {
@@ -115,15 +124,32 @@
       a.click();
     }
 
-    // Highlight rows closing in 7 days (Option 3)
+    // Highlight rows closing within 7 days
     function highlightSoon() {
       const today = new Date();
       $('#jobs-table tbody tr:visible').each(function () {
         const dateStr = $(this).find('td:nth-child(3)').text();
         const jobDate = new Date(dateStr + " 00:00:00");
         const diff = (jobDate - today) / (1000 * 60 * 60 * 24);
-        if (diff <= 7) {
+        if (diff <= 7 && diff >= 0) {
           $(this).css('background-color', '#fff3cd');
+        }
+      });
+    }
+
+    // Show recently closed jobs
+    function showClosedJobs() {
+      const today = new Date();
+      $('.btn-group button[data-filter]').removeClass('active');
+
+      $('#jobs-table tbody tr').each(function () {
+        const dateStr = $(this).find('td:nth-child(3)').text();
+        const jobDate = new Date(dateStr + " 00:00:00");
+
+        if (jobDate < today) {
+          $(this).show().addClass('faded');
+        } else {
+          $(this).hide().removeClass('faded');
         }
       });
     }
