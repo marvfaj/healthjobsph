@@ -1,103 +1,145 @@
-/* Base styling */
-body {
-  font-family: "Segoe UI", sans-serif;
+/* styles.css – Minimalist styling for CSC Nurse Job Listings */
+
+/* ========== Base Reset ========== */
+body, h1, p, table, th, td, button {
   margin: 0;
   padding: 0;
-  line-height: 1.6;
-  background: #f7f9fb;
-  color: #333;
+  font-family: system-ui, sans-serif;
+  box-sizing: border-box;
 }
 
-header {
-  background: #003366;
-  color: white;
-  padding: 1.5em 1em;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+body {
+  background: #f9f9f9;
+  color: #222;
+  line-height: 1.5;
+  padding: 1rem;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 1.8rem;
-}
-
-main {
-  max-width: 1000px;
+/* ========== Layout ========== */
+header, main, footer {
+  max-width: 1200px;
   margin: auto;
-  padding: 1em;
+  padding: 1rem;
 }
 
-footer {
-  background: #f1f3f5;
-  color: #444;
-  text-align: center;
-  padding: 1em;
-  font-size: 0.9rem;
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Message shown when no results */
-.no-matches {
-  display: none;
-  text-align: center;
-  color: #888;
-  padding: 1em;
-  font-style: italic;
+p {
+  margin-bottom: 1rem;
 }
 
-/* DataTable adjustments */
-table.dataTable {
-  width: 100% !important;
-  background: white;
+/* ========== Table ========== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
 }
 
-table.dataTable thead th {
-  background-color: #e9f0f7;
-  color: #333;
-  font-weight: 600;
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
 }
 
-/* Buttons style */
-.dt-button {
-  background: #005fa3;
-  color: white;
-  border: none;
-  padding: 0.5em 1em;
-  margin-bottom: 1em;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
+th {
+  background: #f2f2f2;
+  font-weight: bold;
 }
 
-.dt-button:hover {
-  background: #004b85;
-}
+@media screen and (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
 
-/* Mobile-friendly layout */
-@media (max-width: 768px) {
-  table.dataTable thead {
+  thead {
     display: none;
   }
 
-  table.dataTable td {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 8px;
-  }
-
-  table.dataTable tr {
-    margin-bottom: 1em;
-    background: white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    overflow: hidden;
+    background: #fff;
+    padding: 0.5rem;
   }
 
-  table.dataTable td::before {
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  td::before {
     content: attr(data-label);
     font-weight: bold;
-    display: block;
-    margin-bottom: 4px;
-    color: #555;
+    color: #666;
   }
+}
+
+/* ========== Filter Buttons ========== */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filter-btn {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background: #0078D4;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn:focus {
+  background: #005a9e;
+  outline: none;
+}
+
+/* ========== No Results Message ========== */
+#no-results {
+  text-align: center;
+  padding: 1rem;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+/* ========== Footer ========== */
+footer {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 2rem;
+}
+
+/* ========== Accessibility ========== */
+a {
+  color: #005a9e;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/* ========== Optional Loading Spinner ========== */
+.loading {
+  text-align: center;
+  font-style: italic;
+  color: #555;
 }
