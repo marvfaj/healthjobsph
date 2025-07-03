@@ -2,56 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CSC Nurse Vacancies – Health Jobs PH</title>
-  <meta name="description" content="Browse CSC nurse vacancies in Luzon, Visayas, and Mindanao. Fast, filtered job board for Filipino nurses." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Free, up-to-date listings of CSC nurse vacancies across Luzon, Visayas, and Mindanao. Helping Filipino nurses find government jobs." />
+  <meta name="keywords" content="nurse jobs, CSC, Philippines, government nurse, healthcare careers" />
+  <link rel="canonical" href="https://marvfaj.github.io/healthjobsph/" />
+  
+  <!-- Open Graph Metadata -->
+  <meta property="og:title" content="CSC Nurse Vacancies – Health Jobs PH" />
+  <meta property="og:description" content="Free, live listings of CSC nurse job openings across Luzon, Visayas, and Mindanao." />
+  <meta property="og:url" content="https://marvfaj.github.io/healthjobsph/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Defer loading scripts for performance -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js" integrity="sha512-i3T32qQbbH3Ftth5GC3bWVXGV7L5RVrQyLm7SrxIGGnGXhx7z+28hvO9kB9ti2B/qj3uHPQWUnG2lQmjgACXZA==" crossorigin="anonymous"></script>
+  <script defer src="script.js"></script>
+
+  <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; connect-src 'self';" />
 </head>
+
 <body>
   <header>
     <h1>CSC Nurse Vacancies</h1>
   </header>
 
-  <main>
-    <section class="filters">
-      <input class="search" placeholder="🔍 Search by office, region, or position" />
-      <div class="buttons">
-        <button class="filter-btn" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="Luzon">Luzon</button>
-        <button class="filter-btn" data-filter="Visayas">Visayas</button>
-        <button class="filter-btn" data-filter="Mindanao">Mindanao</button>
-      </div>
-    </section>
+  <main id="job-list">
+    <h2>Health Jobs PH – Government Nurse Openings</h2>
+    <p>Use the buttons and search bar to filter CSC nurse vacancies. Export results to CSV or browse by island group.</p>
 
-    <div id="job-list">
-      <table>
-       <thead>
-          <tr>
-            <th>Office</th>
-            <th>Position</th>
-            <th>Region</th>
-            <th>Island</th> <!-- ✅ NEW -->
-            <th>Posting Date</th>
-            <th>Closing Date</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody class="list" id="job-table-body">
-          <tr><td colspan="6">Loading job listings…</td></tr>
-        </tbody>
-      </table>
+    <!-- Island Group Filters -->
+    <div class="filter-group" role="group" aria-label="Filter by Island Group">
+      <button class="filter-btn" data-filter="all" aria-label="Show all jobs">All</button>
+      <button class="filter-btn" data-filter="Luzon" aria-label="Show jobs in Luzon">Luzon</button>
+      <button class="filter-btn" data-filter="Visayas" aria-label="Show jobs in Visayas">Visayas</button>
+      <button class="filter-btn" data-filter="Mindanao" aria-label="Show jobs in Mindanao">Mindanao</button>
     </div>
 
-    <div id="no-results" style="display:none;">No matching vacancies found.</div>
+    <!-- Keyword Search -->
+    <input class="search" placeholder="Search Office or Position…" aria-label="Keyword search bar" />
+
+    <!-- Jobs Table -->
+    <table id="jobs-table">
+      <caption>CSC Nurse Job Vacancies by Region</caption>
+      <thead>
+        <tr>
+          <th>Office</th>
+          <th>Position</th>
+          <th>Region</th>
+          <th>Island</th>
+          <th>Posting Date</th>
+          <th>Closing Date</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody class="list" id="job-table-body">
+        <tr><td colspan="7">⏳ Loading job listings…</td></tr>
+      </tbody>
+    </table>
+
+    <!-- No results message -->
+    <div id="no-results" style="display:none;" role="alert">⚠ No matching vacancies found. Try a different search or filter.</div>
   </main>
 
   <footer>
-    © 2025 Health Jobs PH
+    <p>© 2025 Health Jobs PH. Updated daily. <a href="mailto:dev@healthjobs.ph">Report an issue</a></p>
   </footer>
 
-  <!-- Include List.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
-  <!-- Custom logic -->
-  <script src="script.js"></script>
+  <!-- Fallback for no JS -->
+  <noscript>
+    <p style="text-align: center; color: red;">⚠ JavaScript is required to view the job listings. Please enable it or contact us.</p>
+  </noscript>
 </body>
 </html>
