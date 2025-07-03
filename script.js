@@ -1,29 +1,35 @@
-// 1. Load HTML <tr> rows from external file
+// script.js – Filter and search nurse jobs using List.js
+
+// Load HTML job rows from external fragment
 fetch('jobs_all_rows.html')
-  .then(response => response.text())
+  .then(response => {
+    if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+    return response.text();
+  })
   .then(html => {
-    // 2. Insert rows into the table
+    // Inject rows into tbody
     document.getElementById('job-table-body').innerHTML = html;
 
-    // 3. Initialize List.js
-    const options = {
-      valueNames: ['office', 'position', 'region', 'posting', 'closing'],
+    // Initialize List.js
+    const jobList = new List('job-list', {
+      valueNames: ['office', 'position', 'region', 'island', 'posting', 'closing'],
       listClass: 'list'
-    };
-    const jobList = new List('job-list', options);
+    });
 
-    // 4. Island group filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
+    // Handle island group filter buttons
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => {
       btn.addEventListener('click', () => {
         const island = btn.dataset.filter;
         jobList.filter(item => {
           if (island === 'all') return true;
-          return item.el.dataset.island === island;
+          const islandCell = item.el.querySelector('td[data-label="Island"]');
+          return islandCell && islandCell.textContent.trim() === island;
         });
       });
     });
 
-    // 5. Show/hide "no results" message
+    // Show or hide "no results" message
     jobList.on('updated', () => {
       const noResults = document.getElementById('no-results');
       if (jobList.matchingItems.length === 0) {
@@ -33,7 +39,10 @@ fetch('jobs_all_rows.html')
       }
     });
 
-  }).catch(error => {
-    document.getElementById('job-table-body').innerHTML = `<tr><td colspan="6">❌ Error loading jobs: ${error.message}</td></tr>`;
-    console.error("Error loading job data:", error);
+    console.log(`✅ Loaded ${jobList.items.length} jobs.`);
+  })
+  .catch(error => {
+    const fallback = document.getElementById('job-table-body');
+    fallback.innerHTML = `<tr><td colspan="7">❌ Error loading jobs: ${error.message}</td></tr>`;
+    console.error("❌ Failed to load job listings:", error);
   });
