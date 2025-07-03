@@ -1,255 +1,76 @@
-// script.js – Filter and search nurse jobs using List.js
-// Enhanced version with performance and reliability improvements
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Find CSC nurse job vacancies across all Philippine regions">
+  <meta name="keywords" content="nurse jobs, CSC, Philippines, healthcare, government careers">
 
-// Configuration
-const CONFIG = {
-  fetchTimeout: 10000,
-  domSettleDelay: 100,
-  cacheMaxAge: 300
-};
+  <title>CSC Nurse Vacancies</title>
 
-// Utility functions
-function showLoading(show = true) {
-  const loader = document.getElementById('loading-indicator');
-  if (loader) {
-    loader.style.display = show ? 'block' : 'none';
-  }
-}
+  <!-- List.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"
+          integrity="sha512-yX8gEoXjRToZCSu5XNmINk8LPDkZfVaKOTXLgyeB56KNNylmE4ZtKLfLybfHNmYutHVWbNSMDMRZ/1Ud1N+2Qg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-function validateRequiredElements() {
-  const required = ['job-table-body', 'job-list', 'no-results'];
-  const missing = required.filter(id => !document.getElementById(id));
-  
-  if (missing.length > 0) {
-    throw new Error(`Missing required DOM elements: ${missing.join(', ')}`);
-  }
-}
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
 
-function showError(message) {
-  const tableBody = document.getElementById('job-table-body');
-  if (tableBody) {
-    tableBody.innerHTML = `<tr><td colspan="7">❌ ${message}</td></tr>`;
-  }
-  console.error(`❌ ${message}`);
-}
+</head>
+<body>
+  <header>
+    <h1>CSC Nurse Job Vacancies</h1>
+    <p>Filter nurse vacancies by island group or search by keyword.</p>
+  </header>
 
-function announceToScreenReader(message) {
-  const announcement = document.createElement('div');
-  announcement.setAttribute('aria-live', 'polite');
-  announcement.setAttribute('aria-atomic', 'true');
-  announcement.style.position = 'absolute';
-  announcement.style.left = '-10000px';
-  announcement.textContent = message;
-  document.body.appendChild(announcement);
-  
-  setTimeout(() => {
-    document.body.removeChild(announcement);
-  }, 1000);
-}
+  <!-- Island group filter buttons -->
+  <nav aria-label="Island group filter">
+    <button class="filter-btn active" data-filter="all" aria-label="Show all job listings">All</button>
+    <button class="filter-btn" data-filter="Luzon" aria-label="Show Luzon jobs">Luzon</button>
+    <button class="filter-btn" data-filter="Visayas" aria-label="Show Visayas jobs">Visayas</button>
+    <button class="filter-btn" data-filter="Mindanao" aria-label="Show Mindanao jobs">Mindanao</button>
+  </nav>
 
-// Enhanced fetch with timeout and better error handling
-function fetchJobsWithTimeout(url, timeout = CONFIG.fetchTimeout) {
-  return Promise.race([
-    fetch(url, {
-      headers: {
-        'Accept-Encoding': 'gzip, deflate',
-        'Cache-Control': `max-age=${CONFIG.cacheMaxAge}`
-      }
-    }),
-    new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Request timeout')), timeout)
-    )
-  ]);
-}
+  <!-- Search box -->
+  <section id="job-list">
+    <input class="search" placeholder="Search job titles, regions, or offices…" aria-label="Search jobs" />
 
-// Optimized DOM injection using DocumentFragment
-function injectJobsHTML(html) {
-  const tableBody = document.getElementById('job-table-body');
-  const fragment = document.createDocumentFragment();
-  const tempDiv = document.createElement('div');
-  
-  tempDiv.innerHTML = html;
-  
-  while (tempDiv.firstChild) {
-    fragment.appendChild(tempDiv.firstChild);
-  }
-  
-  tableBody.appendChild(fragment);
-  return tableBody;
-}
+    <!-- Job Table -->
+    <div class="table-wrapper">
+      <table id="jobs-table">
+        <caption>Open Nurse Positions (Philippines)</caption>
+        <thead>
+          <tr>
+            <th>Office</th>
+            <th>Position</th>
+            <th>Region</th>
+            <th>Island</th>
+            <th>Posting Date</th>
+            <th>Closing Date</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody id="job-table-body" class="list">
+          <!-- RStudio-injected rows appear here -->
+        </tbody>
+      </table>
+    </div>
 
-// Initialize List.js with proper error handling
-function initializeJobList() {
-  return new Promise((resolve, reject) => {
-    try {
-      const jobList = new List('job-list', {
-        valueNames: ['office', 'position', 'region', 'island', 'posting', 'closing'],
-        listClass: 'list'
-      });
-      
-      if (!jobList) {
-        throw new Error('List.js failed to initialize');
-      }
-      
-      if (jobList.items.length === 0) {
-        throw new Error('No job items found in the list');
-      }
-      
-      resolve(jobList);
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
+    <!-- No results message -->
+    <p id="no-results" class="hidden">No matching vacancies found.</p>
+    <p id="loading-indicator" role="status">Loading job vacancies…</p>
+  </section>
 
-// Pre-process island data for better filter performance
-function preprocessIslandData(jobList) {
-  return jobList.items.map(item => {
-    const islandCell = item.el.querySelector('td[data-label="Island"]');
-    return {
-      item,
-      island: islandCell ? islandCell.textContent.trim() : null
-    };
-  });
-}
+  <!-- Script -->
+  <script defer src="script.js"></script>
 
-// Optimized filter function
-function createFilterFunction(itemsWithIsland) {
-  return function(targetIsland) {
-    return function(item) {
-      if (targetIsland === 'all') return true;
-      
-      const itemData = itemsWithIsland.find(data => data.item === item);
-      return itemData && itemData.island === targetIsland;
-    };
-  };
-}
+  <!-- Fallback for no JS -->
+  <noscript>
+    <p>This job listing requires JavaScript. Please enable JS to view vacancies or contact support.</p>
+  </noscript>
 
-// Setup filter buttons with event delegation
-function setupFilterButtons(jobList, itemsWithIsland) {
-  const filterFunction = createFilterFunction(itemsWithIsland);
-  
-  // Use event delegation for better performance
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('filter-btn')) {
-      const island = e.target.dataset.filter;
-      
-      // Remove active class from all buttons
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      // Add active class to clicked button
-      e.target.classList.add('active');
-      
-      // Apply filter
-      jobList.filter(filterFunction(island));
-      
-      // Announce filter change to screen readers
-      const resultCount = jobList.matchingItems.length;
-      announceToScreenReader(
-        island === 'all' 
-          ? `Showing all ${resultCount} jobs` 
-          : `Filtered to ${resultCount} jobs in ${island}`
-      );
-    }
-  });
-}
-
-// Handle no results display
-function setupNoResultsHandler(jobList) {
-  jobList.on('updated', () => {
-    const noResults = document.getElementById('no-results');
-    if (noResults) {
-      if (jobList.matchingItems.length === 0) {
-        noResults.style.display = 'block';
-        noResults.setAttribute('aria-live', 'polite');
-      } else {
-        noResults.style.display = 'none';
-      }
-    }
-  });
-}
-
-// Main initialization function
-async function initializeJobTable() {
-  try {
-    // Show loading indicator
-    showLoading(true);
-    
-    // Validate required DOM elements
-    validateRequiredElements();
-    
-    // Fetch job data
-    console.log('🔄 Fetching job data...');
-    const response = await fetchJobsWithTimeout('jobs_all_rows.html');
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-    
-    const html = await response.text();
-    
-    if (!html.trim()) {
-      throw new Error('Empty response from server');
-    }
-    
-    console.log(`📥 Received ${html.length} characters of HTML`);
-    
-    // Inject HTML into DOM
-    injectJobsHTML(html);
-    console.log('✅ HTML injected into DOM');
-    
-    // Wait for DOM to settle
-    await new Promise(resolve => setTimeout(resolve, CONFIG.domSettleDelay));
-    
-    // Initialize List.js
-    console.log('🔄 Initializing List.js...');
-    const jobList = await initializeJobList();
-    
-    // Pre-process data for better performance
-    const itemsWithIsland = preprocessIslandData(jobList);
-    
-    // Setup event handlers
-    setupFilterButtons(jobList, itemsWithIsland);
-    setupNoResultsHandler(jobList);
-    
-    // Hide loading indicator
-    showLoading(false);
-    
-    console.log(`✅ Successfully loaded ${jobList.items.length} jobs`);
-    announceToScreenReader(`${jobList.items.length} job listings loaded`);
-    
-    return jobList;
-    
-  } catch (error) {
-    showLoading(false);
-    showError(`Failed to load job listings: ${error.message}`);
-    
-    // Log detailed error for debugging
-    console.error('❌ Job table initialization failed:', {
-      message: error.message,
-      stack: error.stack,
-      timestamp: new Date().toISOString()
-    });
-    
-    throw error;
-  }
-}
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeJobTable);
-} else {
-  // DOM is already loaded
-  initializeJobTable();
-}
-
-// Export for testing (if needed)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    initializeJobTable,
-    validateRequiredElements,
-    preprocessIslandData
-  };
-}
+  <footer>
+    <small>&copy; 2025 Civil Service Commission (demo). Not an official site.</small>
+  </footer>
+</body>
+</html>
